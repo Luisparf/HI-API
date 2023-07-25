@@ -1,0 +1,15 @@
+{
+    "name": "luis/hi-api",
+    "autoload": {
+        "psr-4": {
+            "Luis\\HiApi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "luisparf",
+            "email": "luispauloaraujoafonso@gmail.com"
+        }
+    ],
+    "require": {}
+}
