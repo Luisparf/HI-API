@@ -17,24 +17,35 @@ error_reporting(E_ALL);
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma"> -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous"> -->
 <style>
 body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 .w3-bar-block .w3-bar-item {padding:20px}
 .custom-input {
-    /* Adicione aqui os estilos desejados para os inputs */
-    width: 200px;
-    margin: 5px;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  /* Adicione aqui os estilos desejados para os inputs */
+  width: 400px;
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
+
 .beneficiary-fieldset {
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+
+  /* Centraliza o conteúdo no centro do fieldset */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.beneficiary-fieldset legend {
+  /* Centraliza a legenda no centro do fieldset */
+  text-align: center;
 }
 </style>
 </head>
@@ -61,6 +72,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 <div class="w3-main w3-content w3-padding" style="max-width:1200px;margin-top:100px">
 
  
+  <a href="index.php"  class="w3-center w3-button" style="font-size: 30px; margin-bottom: 20px;">Voltar</a>
 
   <!-- Pagination -->
   <!-- <div class="w3-center w3-padding-32">
@@ -77,19 +89,19 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
   <form class="pure-form">
   
 
-<fieldset>
-    <legend>Insira os dados abaixo:</legend>
-    <label for="select-beneficiaries">Quantidade de beneficiários:</label>
-        <select id="select-beneficiaries" class="w3-white" name="beneficiaries" required onchange="createInputs()">
-            <option value="">Selecione...</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-        </select>
-        <div id="input-container"></div>
+    <fieldset>
+        <legend>Insira os dados abaixo:</legend>
+        <label for="select-beneficiaries">Quantidade de beneficiários:</label>
+            <select id="select-beneficiaries"  name="beneficiaries" required onchange="createInputs()">
+                <option value="">Selecione...</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+            <div id="input-container"></div>
 
-</fieldset>
+    </fieldset>
 
 </form>
   
@@ -148,14 +160,14 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 
 <script>
 
-    const registrationOptions = [
-        { value: 'reg1', text: 'Bitix Customer Plano 1' },
-        { value: 'reg2', text: 'Bitix Customer Plano 2' },
-        { value: 'reg3', text: 'Bitix Customer Plano 3' },
-        { value: 'reg4', text: 'Bitix Customer Plano 4' },
-        { value: 'reg5', text: 'Bitix Customer Plano 5' },
-        { value: 'reg6', text: 'Bitix Customer Plano 6' },
-    ];
+    // const registrationOptions = [
+    //     { value: 'reg1', text: 'Bitix Customer Plano 1' },
+    //     { value: 'reg2', text: 'Bitix Customer Plano 2' },
+    //     { value: 'reg3', text: 'Bitix Customer Plano 3' },
+    //     { value: 'reg4', text: 'Bitix Customer Plano 4' },
+    //     { value: 'reg5', text: 'Bitix Customer Plano 5' },
+    //     { value: 'reg6', text: 'Bitix Customer Plano 6' },
+    // ];
 // Script to open and close sidebar
 function w3_open() {
   document.getElementById("mySidebar").style.display = "block";
@@ -164,48 +176,65 @@ function w3_open() {
 function w3_close() {
   document.getElementById("mySidebar").style.display = "none";
 }
- function createInputs() {
-        const selectValue = parseInt(document.getElementById('select-beneficiaries').value);
-        const inputContainer = document.getElementById('input-container');
-        inputContainer.innerHTML = ''; // Limpa os inputs existentes
+function createInputs() {
+  const selectValue = parseInt(document.getElementById('select-beneficiaries').value);
+  const inputContainer = document.getElementById('input-container');
+  inputContainer.innerHTML = ''; // Limpa os inputs existentes
+  var registrationOptions;
 
-        for (let i = 0; i < selectValue; i++) {
-            const fieldset = document.createElement('fieldset');
-            fieldset.classList.add('beneficiary-fieldset');
+  fetch('plans.json')
+    .then(response => response.json())
+    .then(plansJson => {
+      // Criando o array registrationOptions
+      registrationOptions = plansJson.map(plan => ({
+        value: plan.registro,
+        text: plan.nome
+      }));
 
-            const legend = document.createElement('legend');
-            legend.textContent = 'Beneficiário ' + (i + 1);
-            fieldset.appendChild(legend);
+      console.log(registrationOptions);
 
-            const nameInput = document.createElement('input');
-            nameInput.type = 'text';
-            nameInput.name = 'beneficiary_' + (i + 1) + '_name';
-            nameInput.placeholder = 'Nome';
-            nameInput.classList.add('custom-input');
-            fieldset.appendChild(nameInput);
+      // Agora que temos os dados, criamos os elementos HTML
+      for (let i = 0; i < selectValue; i++) {
+        const fieldset = document.createElement('fieldset');
+        fieldset.classList.add('beneficiary-fieldset');
 
-            const ageInput = document.createElement('input');
-            ageInput.type = 'text';
-            ageInput.name = 'beneficiary_' + (i + 1) + '_age';
-            ageInput.placeholder = 'Idade';
-            ageInput.classList.add('custom-input');
-            fieldset.appendChild(ageInput);
+        const legend = document.createElement('legend');
+        legend.textContent = 'Beneficiário ' + (i + 1);
+        fieldset.appendChild(legend);
 
-            const registrationSelect = document.createElement('select');
-            registrationSelect.name = 'beneficiary_' + (i + 1) + '_registration';
-            registrationSelect.classList.add('custom-input');
+        const nameInput = document.createElement('input');
+        nameInput.type = 'text';
+        nameInput.name = 'beneficiary_' + (i + 1) + '_name';
+        nameInput.placeholder = 'Nome';
+        nameInput.classList.add('custom-input');
+        fieldset.appendChild(nameInput);
 
-            for (const option of registrationOptions) {
-                const optionElement = document.createElement('option');
-                optionElement.value = option.value;
-                optionElement.textContent = option.text;
-                registrationSelect.appendChild(optionElement);
-            }
+        const ageInput = document.createElement('input');
+        ageInput.type = 'text';
+        ageInput.name = 'beneficiary_' + (i + 1) + '_age';
+        ageInput.placeholder = 'Idade';
+        ageInput.classList.add('custom-input');
+        fieldset.appendChild(ageInput);
 
-            fieldset.appendChild(registrationSelect);
-            inputContainer.appendChild(fieldset);
+        const registrationSelect = document.createElement('select');
+        registrationSelect.name = 'beneficiary_' + (i + 1) + '_registration';
+        registrationSelect.classList.add('custom-input');
+
+        for (const option of registrationOptions) {
+          const optionElement = document.createElement('option');
+          optionElement.value = option.value;
+          optionElement.textContent = option.text;
+          registrationSelect.appendChild(optionElement);
         }
-    }
+
+        fieldset.appendChild(registrationSelect);
+        inputContainer.appendChild(fieldset);
+      }
+    })
+    .catch(err => {
+      console.error('Erro ao obter o arquivo plans.json:', err);
+    });
+}
 </script>
 
 </body>

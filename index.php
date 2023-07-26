@@ -33,6 +33,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
   
 <!-- !PAGE CONTENT! -->
 <div class="w3-main w3-content w3-padding" style="max-width:1200px;margin-top:100px">
+      <a href="add.php" class="w3-center w3-button" style="font-size: 30px; margin-botton: 20px;">Novo</a>
 
   <!-- First Photo Grid-->
   <div class="w3-row-padding w3-padding-16 w3-center" id="food">
