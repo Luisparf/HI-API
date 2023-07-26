@@ -11,5 +11,10 @@
             "email": "luispauloaraujoafonso@gmail.com"
         }
     ],
-    "require": {}
+    "require": {},
+    "config": {
+        "vendor-dir": "vendor",
+        "bin-dir": "bin",
+        "public-dir": "public"
+    }
 }

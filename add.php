@@ -18,6 +18,8 @@ error_reporting(E_ALL);
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous"> -->
 <style>
 body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
@@ -86,20 +88,23 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
     </div>
   </div> -->
 
-  <form class="pure-form">
-  
-
+<form class="pure-form">
     <fieldset>
         <legend>Insira os dados abaixo:</legend>
         <label for="select-beneficiaries">Quantidade de beneficiários:</label>
             <select id="select-beneficiaries"  name="beneficiaries" required onchange="createInputs()">
-                <option value="">Selecione...</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
+                <option value="">Selecione... </option>
+                <option value="1"> 1 </option>
+                <option value="2"> 2 </option>
+                <option value="3"> 3 </option>
+                <option value="4"> 4 </option>
+                <option value="5"> 5 </option>
+                <option value="6"> 6 </option>
             </select>
             <div id="input-container"></div>
+            <!-- <div class="w3-center w3-padding-16">Salvar</div>
+            <a href="index.php"  class="w3-center wr-button" >Salvar</a> -->
+            <button  id="save-button" type="button" onclick="saveDataAsJSON()" class="w3-button w3-right" style="display:none;">Salvar</button>
 
     </fieldset>
 
@@ -107,134 +112,180 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
   
   <hr id="about">
 
-  <!-- About Section -->
-  <!-- <div class="w3-container w3-padding-32 w3-center">  
-    <h3>About Me, The Food Man</h3><br>
-    <img src="/w3images/chef.jpg" alt="Me" class="w3-image" style="display:block;margin:auto" width="800" height="533">
-    <div class="w3-padding-32">
-      <h4><b>I am Who I Am!</b></h4>
-      <h6><i>With Passion For Real, Good Food</i></h6>
-      <p>Just me, myself and I, exploring the universe of unknownment. I have a heart of love and an interest of lorem ipsum and mauris neque quam blog. I want to share my world with you. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
-    </div>
-  </div> -->
-  <!-- <hr> -->
-  
-  <!-- Footer -->
-  <!-- <footer class="w3-row-padding w3-padding-32">
-    <div class="w3-third">
-      <h3>FOOTER</h3>
-      <p>Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
-      <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-    </div>
-  
-    <div class="w3-third">
-      <h3>BLOG POSTS</h3>
-      <ul class="w3-ul w3-hoverable">
-        <li class="w3-padding-16">
-          <img src="/w3images/workshop.jpg" class="w3-left w3-margin-right" style="width:50px">
-          <span class="w3-large">Lorem</span><br>
-          <span>Sed mattis nunc</span>
-        </li>
-        <li class="w3-padding-16">
-          <img src="/w3images/gondol.jpg" class="w3-left w3-margin-right" style="width:50px">
-          <span class="w3-large">Ipsum</span><br>
-          <span>Praes tinci sed</span>
-        </li> 
-      </ul>
-    </div>
-
-    <div class="w3-third w3-serif">
-      <h3>POPULAR TAGS</h3>
-      <p>
-        <span class="w3-tag w3-black w3-margin-bottom">Travel</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">New York</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Dinner</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Salmon</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">France</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Drinks</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Ideas</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Flavors</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Cuisine</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Chicken</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Dressing</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Fried</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Fish</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Duck</span>
-      </p>
-    </div>
-  </footer> -->
 
 <!-- End page content -->
 </div>
 
 <script>
 
-    // const registrationOptions = [
-    //     { value: 'reg1', text: 'Bitix Customer Plano 1' },
-    //     { value: 'reg2', text: 'Bitix Customer Plano 2' },
-    //     { value: 'reg3', text: 'Bitix Customer Plano 3' },
-    //     { value: 'reg4', text: 'Bitix Customer Plano 4' },
-    //     { value: 'reg5', text: 'Bitix Customer Plano 5' },
-    //     { value: 'reg6', text: 'Bitix Customer Plano 6' },
-    // ];
-// Script to open and close sidebar
+const beneficiariesData = []; // Array para armazenar os dados dos beneficiários
+let registrationOptions = null;
+
 function w3_open() {
   document.getElementById("mySidebar").style.display = "block";
+
 }
+
  
 function w3_close() {
   document.getElementById("mySidebar").style.display = "none";
 }
-function createInputs() {
-  const selectValue = parseInt(document.getElementById('select-beneficiaries').value);
-  const inputContainer = document.getElementById('input-container');
-  inputContainer.innerHTML = ''; // Limpa os inputs existentes
-  var registrationOptions;
-
-  fetch('plans.json')
-    .then(response => response.json())
-    .then(plansJson => {
-      // Criando o array registrationOptions
-      registrationOptions = plansJson.map(plan => ({
-        value: plan.registro,
-        text: plan.nome
-      }));
-
-      console.log(registrationOptions);
-
-      // Agora que temos os dados, criamos os elementos HTML
-      for (let i = 0; i < selectValue; i++) {
-        const fieldset = document.createElement('fieldset');
-        fieldset.classList.add('beneficiary-fieldset');
-
-        const legend = document.createElement('legend');
-        legend.textContent = 'Beneficiário ' + (i + 1);
-        fieldset.appendChild(legend);
-
-        const nameInput = document.createElement('input');
-        nameInput.type = 'text';
-        nameInput.name = 'beneficiary_' + (i + 1) + '_name';
-        nameInput.placeholder = 'Nome';
-        nameInput.classList.add('custom-input');
-        fieldset.appendChild(nameInput);
-
-        const ageInput = document.createElement('input');
-        ageInput.type = 'text';
-        ageInput.name = 'beneficiary_' + (i + 1) + '_age';
-        ageInput.placeholder = 'Idade';
-        ageInput.classList.add('custom-input');
-        fieldset.appendChild(ageInput);
-
-        const registrationSelect = document.createElement('select');
-        registrationSelect.name = 'beneficiary_' + (i + 1) + '_registration';
-        registrationSelect.classList.add('custom-input');
-
-        for (const option of registrationOptions) {
-          const optionElement = document.createElement('option');
-          optionElement.value = option.value;
-          optionElement.textContent = option.text;
-          registrationSelect.appendChild(optionElement);
+ 
+class Beneficiary {
+        constructor(name, age, registration) {
+            this.name = name;
+            this.age = age;
+            this.cod = registration;
+            // this.price = price;
         }
+    }
 
-        fieldset.appendChild(registrationSelect);
-        inputContainer.appendChild(fieldset);
-      }
-    })
-    .catch(err => {
-      console.error('Erro ao obter o arquivo plans.json:', err);
-    });
+function saveDataAsJSON() {
+        const beneficiariesElements = document.querySelectorAll('.beneficiary-fieldset');
+
+        beneficiariesData.length = 0; // Limpar dados existentes antes de salvar
+
+        let isValidData = true; // Variável para verificar se os dados são válidos
+        let beneficiariesCount = beneficiariesElements.length;
+
+        beneficiariesElements.forEach((fieldset, index) => {
+            const nameInput = fieldset.querySelector('input[name^="beneficiary_"][name$="_name"]');
+            const ageInput = fieldset.querySelector('input[name^="beneficiary_"][name$="_age"]');
+            const registrationSelect = fieldset.querySelector('select[name^="beneficiary_"][name$="_registration"]');
+
+            const name = nameInput.value.trim(); // Remover espaços em branco no início e no final
+            const age = ageInput.value.trim();
+            const price = 0
+
+            // Verificar se os campos de nome e idade não estão vazios antes de salvar os dados
+            if (name && age && registrationSelect) {
+                const registration = registrationSelect.value;
+
+                const beneficiary = new Beneficiary(name, age, registration);
+                beneficiariesData.push(beneficiary);
+            } else {
+                isValidData = false; // Algum campo está vazio, dados não são válidos
+                alert(`Preencha os campos do Beneficiário ${index + 1}.`);
+            }
+        });
+
+        if (isValidData) {
+            const jsonData = JSON.stringify(  beneficiariesData );
+            console.log('jsondata:' + jsonData); // envia pro servidor
+
+            $.ajax({
+                url: 'src/Plano.php',
+                type: 'POST',
+                contentType: 'application/json',
+                data: jsonData,
+                success: function(data, status, message) {
+                    console.log('Resposta do servidor:', data);
+                    // alert('Sucesso!' + data.message);
+                    alert('Sucesso!' + JSON.parse(data).message);
+                    // Aqui você pode tratar a resposta do servidor, se necessário
+                },
+                error: function(xhr, status, error) {
+                    console.log('XHR Object:', xhr);
+                    console.log('Error Status:', status);
+                    console.log('Error:', error);
+
+                    try {
+                        const errorMessage = JSON.parse(xhr.responseText).message;
+                        console.log('Error Message:', errorMessage);
+                        const confirmation = window.confirm('Erro ao enviar os dados para o servidor: ' + errorMessage);
+                        // Do something if needed with the confirmation result
+                    } catch (e) {
+                        console.log('Error parsing response:', e);
+                        window.confirm('Erro ao enviar os dados para o servidor. Por favor, tente novamente mais tarde.');
+                    }
+                }
+
+            });
+    }
+
 }
+
+
+function createInputs() {
+    const selectValue = parseInt(document.getElementById('select-beneficiaries').value);
+    const inputContainer = document.getElementById('input-container');
+    inputContainer.innerHTML = ''; // Limpa os inputs existentes
+
+    // Verifica se os dados já foram carregados anteriormente
+    if (registrationOptions) {
+        for (let i = 0; i < selectValue; i++) {
+            const fieldset = document.createElement('fieldset');
+            fieldset.classList.add('beneficiary-fieldset');
+
+            const legend = document.createElement('legend');
+            legend.textContent = 'Beneficiário ' + (i + 1);
+            fieldset.appendChild(legend);
+
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.name = 'beneficiary_' + (i + 1) + '_name';
+            nameInput.placeholder = 'Nome*';
+            nameInput.classList.add('custom-input');
+            fieldset.appendChild(nameInput);
+
+            const ageInput = document.createElement('input');
+            ageInput.type = 'number';
+            ageInput.name = 'beneficiary_' + (i + 1) + '_age';
+            ageInput.placeholder = 'Idade*';
+            ageInput.classList.add('custom-input');
+            fieldset.appendChild(ageInput);
+
+            const registrationSelect = document.createElement('select');
+            registrationSelect.name = 'beneficiary_' + (i + 1) + '_registration';
+            registrationSelect.classList.add('custom-input');
+
+            console.log(registrationOptions);
+
+            for (const option of registrationOptions) {
+                const optionElement = document.createElement('option');
+                optionElement.value = option.value;
+                optionElement.textContent = option.text;
+                registrationSelect.appendChild(optionElement);
+            }
+
+            fieldset.appendChild(registrationSelect);
+            inputContainer.appendChild(fieldset);
+    }
+  } else {
+    // Faz a requisição apenas se os dados ainda não foram carregados
+    fetch('plans.json')
+        .then(response => response.json())
+        .then(plansJson => {
+        registrationOptions = plansJson.map(plan => ({
+            value: plan.codigo,
+            text: plan.nome
+        }));
+
+             // Chama a função novamente após carregar os dados
+            createInputs();
+        })
+        .catch(err => {
+            console.error('Erro ao obter o arquivo plans.json:', err);
+        });
+  }
+}
+
+ function toggleSaveButton() {
+        const select = document.getElementById('select-beneficiaries');
+        const saveButton = document.getElementById('save-button');
+
+        if (select.value !== '') {
+            saveButton.style.display = 'block';
+        } else {
+            saveButton.style.display = 'none';
+        }
+    }
+
+    // Chamar a função para verificar o estado inicial ao carregar a página
+    toggleSaveButton();
+
+    // Chamar a função sempre que o valor do select for alterado
+    document.getElementById('select-beneficiaries').addEventListener('change', toggleSaveButton);
 </script>
 
 </body>
