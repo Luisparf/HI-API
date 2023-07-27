@@ -45,31 +45,43 @@ $data = Plano::index();
     <a href="add.php" class="w3-center w3-button" style="font-size: 30px; margin-bottom: 20px;">Novo</a>
 
     <div class="proposal-container"> <!-- Add the proposal-container div here -->
-
-        <?php if (!empty($data)): ?>
-            <?php foreach ($data as $proposalIndex => $proposal): ?>
-                <fieldset>
-                    <legend>Proposta (<?= $proposalIndex ?>)</legend>
-                    <?php if (is_array($proposal) && isset($proposal['total'])): ?>
-                        <?php foreach ($proposal as $key => $beneficiary): ?>
-                            <?php if ($key !== 'total'): ?>
-                                <div class="proposal-item">
-                                    <h3><?= isset($beneficiary['name']) ? $beneficiary['name'] : 'N/A' ?></h3>
-                                    <p>Idade: <?= isset($beneficiary['age']) ? $beneficiary['age'] : 'N/A' ?></p>
-                                    <p>Plano: Bitix Customer Plano <?= isset($beneficiary['cod_plan']) ? $beneficiary['cod_plan'] : 'N/A' ?></p>
-                                    <p>Valor: $<?= isset($beneficiary['price']) ? $beneficiary['price'] : 'N/A' ?></p>
-                                </div>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                        <p><strong>Total do plano: $<?= $proposal['total'] ?></strong></p>
-                    <?php else: ?>
-                        <p>Nem dados de propostas <?= $proposalIndex ?></p>
+<?php if (!empty($data)): ?>
+    <?php foreach ($data as $proposalIndex => $proposal): ?>
+        <fieldset>
+            <?php if (is_array($proposal) && isset($proposal['total'])): ?>
+                <?php $creationDate = null; ?>
+                <?php foreach ($proposal as $key => $beneficiary): ?>
+                    <?php if ($key === '0' && isset($beneficiary['created_at'])): ?>
+                        <?php $creationDate = $beneficiary['created_at']; ?>
                     <?php endif; ?>
-                </fieldset>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p>Nenhum dado encontrado.</p>
-        <?php endif; ?>
+
+                    <?php if ($key !== 'total'): ?>
+                        <div class="proposal-item">
+                            <h3><?= isset($beneficiary['name']) ? $beneficiary['name'] : 'N/A' ?></h3>
+                            <p>Idade: <?= isset($beneficiary['age']) ? $beneficiary['age'] : 'N/A' ?></p>
+                            <p>Plano: Bitix Customer Plano <?= isset($beneficiary['cod_plan']) ? $beneficiary['cod_plan'] : 'N/A' ?></p>
+                            <p>Valor: $<?= isset($beneficiary['price']) ? $beneficiary['price'] : 'N/A' ?></p>
+                            <!-- <p>Data de criação<?= isset($beneficiary['created_at']) ? date('d/m/Y', strtotime($beneficiary['created_at'])) : 'N/A' ?></p> -->
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+
+                <?php if (isset($beneficiary['created_at'])): ?>
+                    <legend>Proposta (<?= $proposalIndex ?>) - Data de Criação: <?= $creationDate ?></legend>
+                <?php else: ?>
+                    <legend>Proposta (<?= $proposalIndex ?>)</legend>
+                <?php endif; ?>
+
+                <p><strong>Total do plano: $<?= $proposal['total'] ?></strong></p>
+            <?php else: ?>
+                <p>Nenhum dado de proposta <?= $proposalIndex ?></p>
+            <?php endif; ?>
+        </fieldset>
+    <?php endforeach; ?>
+<?php else: ?>
+    <p>Nenhum dado encontrado.</p>
+<?php endif; ?>
+
     </div>
 
     <hr id="about">

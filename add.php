@@ -143,26 +143,7 @@ function saveDataAsJSON() {
         let isValidData = true; // Variável para verificar se os dados são válidos
         let beneficiariesCount = beneficiariesElements.length;
 
-        // beneficiariesElements.forEach((fieldset, index) => {
-        //     const nameInput = fieldset.querySelector('input[name^="beneficiary_"][name$="_name"]');
-        //     const ageInput = fieldset.querySelector('input[name^="beneficiary_"][name$="_age"]');
-        //     const registrationSelect = fieldset.querySelector('select[name^="beneficiary_"][name$="_registration"]');
-
-        //     const name = nameInput.value.trim(); // Remover espaços em branco no início e no final
-        //     const age = ageInput.value.trim();
-        //     const price = 0
-
-        //     // Verificar se os campos de nome e idade não estão vazios antes de salvar os dados
-        //     if (name && age && registrationSelect) {
-        //         const registration = registrationSelect.value;
-
-        //         const beneficiary = new Beneficiary(name, age, registration);
-        //         beneficiariesData.push(beneficiary);
-        //     } else {
-        //         isValidData = false; // Algum campo está vazio, dados não são válidos
-        //         alert(`Preencha os campos do Beneficiário ${index + 1}.`);
-        //     }
-        // });
+  
         beneficiariesElements.forEach((fieldset, index) => {
         const nameInput = fieldset.querySelector('input[name^="beneficiary_"][name$="_name"]');
         const ageInput = fieldset.querySelector('input[name^="beneficiary_"][name$="_age"]');
@@ -183,6 +164,7 @@ function saveDataAsJSON() {
                 name: name,
                 age: age,
                 cod_plan: registration,
+                created_at: new Date().toISOString(),
             };
 
             beneficiariesData.push(beneficiary);
@@ -219,6 +201,8 @@ function saveDataAsJSON() {
                     console.log('Resposta do servidor:', data);
                     // alert('Sucesso!' + JSON.parse(data.message);
                     alert('Sucesso!' + JSON.parse(data).message);
+                    window.location.href = 'index.php';
+                    
                     // Aqui você pode tratar a resposta do servidor, se necessário
                 },
                 error: function(xhr, status, error) {
