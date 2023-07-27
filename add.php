@@ -13,7 +13,7 @@ error_reporting(E_ALL);
 <!DOCTYPE html>
 <html>
 <head>
-<title>W3.CSS Template</title>
+<title>Hi</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -100,6 +100,10 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
                 <option value="4"> 4 </option>
                 <option value="5"> 5 </option>
                 <option value="6"> 6 </option>
+                <option value="7"> 7 </option>
+                <option value="8"> 8 </option>
+                <option value="9"> 9 </option>
+                <option value="10"> 10 </option>
             </select>
             <div id="input-container"></div>
             <!-- <div class="w3-center w3-padding-16">Salvar</div>
@@ -119,7 +123,6 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 <script>
 
 const beneficiariesData = []; // Array para armazenar os dados dos beneficiários
-let registrationOptions = null;
 
 function w3_open() {
   document.getElementById("mySidebar").style.display = "block";
@@ -131,14 +134,6 @@ function w3_close() {
   document.getElementById("mySidebar").style.display = "none";
 }
  
-class Beneficiary {
-        constructor(name, age, registration) {
-            this.name = name;
-            this.age = age;
-            this.cod = registration;
-            // this.price = price;
-        }
-    }
 
 function saveDataAsJSON() {
         const beneficiariesElements = document.querySelectorAll('.beneficiary-fieldset');
@@ -148,26 +143,68 @@ function saveDataAsJSON() {
         let isValidData = true; // Variável para verificar se os dados são válidos
         let beneficiariesCount = beneficiariesElements.length;
 
+        // beneficiariesElements.forEach((fieldset, index) => {
+        //     const nameInput = fieldset.querySelector('input[name^="beneficiary_"][name$="_name"]');
+        //     const ageInput = fieldset.querySelector('input[name^="beneficiary_"][name$="_age"]');
+        //     const registrationSelect = fieldset.querySelector('select[name^="beneficiary_"][name$="_registration"]');
+
+        //     const name = nameInput.value.trim(); // Remover espaços em branco no início e no final
+        //     const age = ageInput.value.trim();
+        //     const price = 0
+
+        //     // Verificar se os campos de nome e idade não estão vazios antes de salvar os dados
+        //     if (name && age && registrationSelect) {
+        //         const registration = registrationSelect.value;
+
+        //         const beneficiary = new Beneficiary(name, age, registration);
+        //         beneficiariesData.push(beneficiary);
+        //     } else {
+        //         isValidData = false; // Algum campo está vazio, dados não são válidos
+        //         alert(`Preencha os campos do Beneficiário ${index + 1}.`);
+        //     }
+        // });
         beneficiariesElements.forEach((fieldset, index) => {
-            const nameInput = fieldset.querySelector('input[name^="beneficiary_"][name$="_name"]');
-            const ageInput = fieldset.querySelector('input[name^="beneficiary_"][name$="_age"]');
-            const registrationSelect = fieldset.querySelector('select[name^="beneficiary_"][name$="_registration"]');
+        const nameInput = fieldset.querySelector('input[name^="beneficiary_"][name$="_name"]');
+        const ageInput = fieldset.querySelector('input[name^="beneficiary_"][name$="_age"]');
+        const registrationSelect = fieldset.querySelector('select[name^="beneficiary_"][name$="_registration"]');
 
-            const name = nameInput.value.trim(); // Remover espaços em branco no início e no final
-            const age = ageInput.value.trim();
-            const price = 0
+        const name = nameInput.value.trim();
+        const age = ageInput.value.trim();
+        const price = 0;
 
-            // Verificar se os campos de nome e idade não estão vazios antes de salvar os dados
-            if (name && age && registrationSelect) {
-                const registration = registrationSelect.value;
+        // Verificar se os campos de nome e idade não estão vazios antes de salvar os dados
+        if (name && age && registrationSelect) {
+            const registration = registrationSelect.value;
 
-                const beneficiary = new Beneficiary(name, age, registration);
-                beneficiariesData.push(beneficiary);
-            } else {
-                isValidData = false; // Algum campo está vazio, dados não são válidos
-                alert(`Preencha os campos do Beneficiário ${index + 1}.`);
-            }
+            // Check the number of beneficiaries with the same "registrationSelect"
+            const lifes = beneficiariesData.filter(beneficiary => beneficiary.registration === registration).length + 1;
+
+            const beneficiary = {
+                name: name,
+                age: age,
+                cod_plan: registration,
+            };
+
+            beneficiariesData.push(beneficiary);
+        } else {
+            isValidData = false; // Algum campo está vazio, dados não são válidos
+            alert(`Preencha os campos do Beneficiário ${index + 1}.`);
+        }
         });
+
+        // conta as ocorrências de planos iguais
+        const registrationCounts = beneficiariesData.reduce((acc, beneficiary) => {
+            acc[beneficiary.cod_plan] = (acc[beneficiary.cod_plan] || 0) + 1;
+            return acc;
+        }, {});
+
+        // atualiza o campo de minimo vidas
+        beneficiariesData.forEach(beneficiary => {
+            beneficiary.lifes = registrationCounts[beneficiary.cod_plan];
+        });
+
+        console.log(beneficiariesData);
+
 
         if (isValidData) {
             const jsonData = JSON.stringify(  beneficiariesData );
@@ -180,7 +217,7 @@ function saveDataAsJSON() {
                 data: jsonData,
                 success: function(data, status, message) {
                     console.log('Resposta do servidor:', data);
-                    // alert('Sucesso!' + data.message);
+                    // alert('Sucesso!' + JSON.parse(data.message);
                     alert('Sucesso!' + JSON.parse(data).message);
                     // Aqui você pode tratar a resposta do servidor, se necessário
                 },
@@ -205,12 +242,13 @@ function saveDataAsJSON() {
 
 }
 
+    let registrationOptions = null;
 
 function createInputs() {
     const selectValue = parseInt(document.getElementById('select-beneficiaries').value);
     const inputContainer = document.getElementById('input-container');
     inputContainer.innerHTML = ''; // Limpa os inputs existentes
-
+    
     // Verifica se os dados já foram carregados anteriormente
     if (registrationOptions) {
         for (let i = 0; i < selectValue; i++) {
