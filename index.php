@@ -69,7 +69,7 @@ $data = Plano::index();
                 <?php if (isset($beneficiary['created_at'])): ?>
                     <legend>Proposta (<?= $proposalIndex ?>) - Data de Criação: <?= $creationDate ?></legend>
                 <?php else: ?>
-                    <legend>Proposta (<?= $proposalIndex ?>)</legend>
+                    <legend>Proposta (<?= $proposalIndex + 1?>)</legend>
                 <?php endif; ?>
 
                 <p><strong>Total do plano: $<?= $proposal['total'] ?></strong></p>

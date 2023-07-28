@@ -188,7 +188,7 @@ function saveDataAsJSON() {
             console.log('jsondata:' + jsonData); 
 
             $.ajax({
-                url: 'src/Plano.php',
+                url: 'Plano.php',
                 type: 'POST',
                 contentType: 'application/json',
                 data: jsonData,
@@ -196,7 +196,7 @@ function saveDataAsJSON() {
                     console.log('Resposta do servidor:', data);
                     // alert('Sucesso!' + JSON.parse(data.message);
                     alert('Sucesso!' + JSON.parse(data).message);
-                    window.location.href = 'index.php';
+                    window.location.href = '../index.php';
                     
                 },
                 error: function(xhr, status, error) {
