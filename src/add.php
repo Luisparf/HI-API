@@ -1,8 +1,8 @@
 <?php
 // require_once 'vendor/autoload.php';
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 ?>
 <!DOCTYPE html>
@@ -53,7 +53,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
   <a href="javascript:void(0)" onclick="w3_close()"
   class="w3-bar-item w3-button">Fechar menu</a>
   <a href="#food" onclick="w3_close()" class="w3-bar-item w3-button">Novo</a>
-  <a href="index.php" class="w3-bar-item w3-button">Voltar</a>
+  <a href="../index.php" class="w3-bar-item w3-button">Voltar</a>
 </nav>
 
 <!-- Top menu -->
@@ -69,7 +69,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 <div class="w3-main w3-content w3-padding" style="max-width:1200px;margin-top:100px">
 
  
-  <a href="index.php"  class="w3-center w3-button" style="font-size: 30px; margin-bottom: 20px;">Voltar</a>
+  <a href="../index.php"  class="w3-center w3-button" style="font-size: 30px; margin-bottom: 20px;">Voltar</a>
 
   <!-- Pagination -->
   <!-- <div class="w3-center w3-padding-32">
@@ -185,7 +185,7 @@ function saveDataAsJSON() {
 
         if (isValidData) {
             const jsonData = JSON.stringify(  beneficiariesData );
-            console.log('jsondata:' + jsonData); // envia pro servidor
+            console.log('jsondata:' + jsonData); 
 
             $.ajax({
                 url: 'src/Plano.php',
@@ -198,7 +198,6 @@ function saveDataAsJSON() {
                     alert('Sucesso!' + JSON.parse(data).message);
                     window.location.href = 'index.php';
                     
-                    // Aqui você pode tratar a resposta do servidor, se necessário
                 },
                 error: function(xhr, status, error) {
                     console.log('XHR Object:', xhr);
@@ -270,7 +269,7 @@ function createInputs() {
     }
   } else {
     // Faz a requisição apenas se os dados ainda não foram carregados
-    fetch('plans.json')
+    fetch('../plans.json')
         .then(response => response.json())
         .then(plansJson => {
         registrationOptions = plansJson.map(plan => ({

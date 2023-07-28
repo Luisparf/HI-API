@@ -115,62 +115,60 @@ class Plano
 //     }
 // }
 
-public function saveDataFromJSON()
-{
-    // Receber o JSON enviado pelo cliente
-    $jsonData = file_get_contents('php://input');
-    $jsonData = json_decode($jsonData, true);
+    public function saveDataFromJSON()
+    {
+        // Receber o JSON enviado pelo cliente
+        $jsonData = file_get_contents('php://input');
+        $jsonData = json_decode($jsonData, true);
 
-    if (is_array($jsonData)) {
-        $updatedData = array();
-        $total = 0;
+        if (is_array($jsonData)) {
+            $updatedData = array();
+            $total = 0;
 
-        $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'proposta.json';
-        $proposalIndex = 0; // Initialize the proposal index
+            $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'proposta.json';
+            $proposalIndex = 0; 
 
-        foreach ($jsonData as $beneficiario) {
-            $idadeBeneficiario = $beneficiario['age'];
-            $codigoPlanoBeneficiario = $beneficiario['cod_plan'];
-            $createdAt = $beneficiario['created_at'];
-            $minimoVidas = $beneficiario['lifes'];
-            $preco = $this->calculatePrice($idadeBeneficiario, $codigoPlanoBeneficiario, $minimoVidas);
-            $total += $preco;
-            $beneficiario['price'] = $preco;
-            $beneficiario['created_at'] = $createdAt;
-            $updatedData[$proposalIndex][] = $beneficiario;
-        }
-
-        foreach ($updatedData as &$proposal) {
-            $proposal['total'] = $total;
-        }
-
-        if (file_exists($filePath)) {
-            $existingData = file_get_contents($filePath);
-            $existingData = json_decode($existingData, true);
-
-            if (is_array($existingData)) {
-                $jsonData = array_merge($existingData, $updatedData);
+            foreach ($jsonData as $beneficiario) {
+                $idadeBeneficiario = $beneficiario['age'];
+                $codigoPlanoBeneficiario = $beneficiario['cod_plan'];
+                $createdAt = $beneficiario['created_at'];
+                $minimoVidas = $beneficiario['lifes'];
+                $preco = $this->calculatePrice($idadeBeneficiario, $codigoPlanoBeneficiario, $minimoVidas);
+                $total += $preco;
+                $beneficiario['price'] = $preco;
+                $beneficiario['created_at'] = $createdAt;
+                $updatedData[$proposalIndex][] = $beneficiario;
             }
 
-        } else {
-            $jsonData = $updatedData;
-        }
+            foreach ($updatedData as &$proposal) {
+                $proposal['total'] = $total;
+            }
 
-        if (file_put_contents($filePath, json_encode($jsonData, JSON_PRETTY_PRINT))) {
-            // Resposta para o cliente (pode ser personalizada conforme necessário)
-            echo json_encode(['success' => true, 'message' => 'Dados salvos com sucesso em' . $filePath]);
-        } else {
-            if (!is_writable($filePath)) {
-                echo json_encode(['success' => false, 'message' => 'Erro de permissão. O servidor não tem permissão para salvar o arquivo.']);
+            if (file_exists($filePath)) {
+                $existingData = file_get_contents($filePath);
+                $existingData = json_decode($existingData, true);
+
+                if (is_array($existingData)) {
+                    $jsonData = array_merge($existingData, $updatedData);
+                }
+
             } else {
-                echo json_encode(['success' => false, 'message' => 'Erro ao salvar os dados.']);
+                $jsonData = $updatedData;
             }
+
+            if (file_put_contents($filePath, json_encode($jsonData, JSON_PRETTY_PRINT))) {
+                echo json_encode(['success' => true, 'message' => 'Dados salvos com sucesso em' . $filePath]);
+            } else {
+                if (!is_writable($filePath)) {
+                    echo json_encode(['success' => false, 'message' => 'Erro de permissão. O servidor não tem permissão para salvar o arquivo.']);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Erro ao salvar os dados.']);
+                }
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'JSON inválido.']);
         }
-    } else {
-        // Resposta para o cliente em caso de JSON inválido
-        echo json_encode(['success' => false, 'message' => 'JSON inválido.']);
     }
-}
 
 
     public function create()
@@ -178,19 +176,13 @@ public function saveDataFromJSON()
         $this->saveDataFromJSON();
     }
 }
-// Fetch JSON data sent by the client
 $jsonData = file_get_contents('php://input');
 $jsonData = json_decode($jsonData, true);
 
-// Check if the JSON was decoded correctly
 if (is_array($jsonData)) {
-    // Create an instance of Plano with the input data
     $plano = new Plano($jsonData);
-
-    // Call the create method to process the data and save it to the file
     $plano->create();
 } else {
-    // Handle the case of invalid JSON data
     echo '';
     // echo json_encode(['success' => false, 'message' => 'JSON inválido.']);
 }
